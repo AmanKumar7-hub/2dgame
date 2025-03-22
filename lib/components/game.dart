@@ -4,6 +4,8 @@ import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_kenney_xml/flame_kenney_xml.dart';
 import 'background.dart';
 
+import 'ground.dart';
+
 class MyPhysicsGame extends Forge2DGame{
   MyPhysicsGame():super(
     gravity:Vector2(0, 10),
@@ -37,6 +39,21 @@ class MyPhysicsGame extends Forge2DGame{
     tiles = spriteSheets[2];
 
     await world.add(Background(sprite: Sprite(backgroundImage)));
+    //addding the ground function to the screen
+    await addGround();
     return super.onLoad();
   }
+
+  Future<void> addGround(){
+    return world.addAll([
+      for (var x = camera.visibleWorldRect.left;
+      x < camera.visibleWorldRect.right + groundSize;
+      x += groundSize)
+        Ground(
+          Vector2(x, (camera.visibleWorldRect.height - groundSize) / 2),
+          tiles.getSprite('grass.png'),
+        ),
+    ]);
+  }
 }
+
